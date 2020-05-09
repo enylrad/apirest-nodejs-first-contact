@@ -1,6 +1,5 @@
 'use strict'
 
-const mongoose = require('mongoose')
 const User = require('../models/user')
 const service = require('../services')
 
@@ -12,7 +11,7 @@ function signUp(req, res) {
     })
 
     user.save((err) => {
-        if (err) return res.status(500).send({ message: err })
+        if (err) return res.status(500).send({ message: `${err}` })
 
         return res.status(201).send({ token: service.createToken(user) })
     })
@@ -20,7 +19,7 @@ function signUp(req, res) {
 
 function signIn(req, res) {
     User.find({ email: req.body.email }, (err, user) => {
-        if (err) return res.status(500).send({ message: err })
+        if (err) return res.status(500).send({ message: `${err}`})
         if (!user) return res.status(404).send({ message: 'User not found' })
 
         req.user = user

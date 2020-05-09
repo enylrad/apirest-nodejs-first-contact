@@ -1,12 +1,12 @@
 'use strict'
 
-const Product = require('../models/productSchema')
+const Product = require('../models/product')
 
 function getProduct(req, res) {
     let productId = req.params.productId
 
     Product.findById(productId, (err, product) => {
-        if (err) return res.status(500).send({ message: err })
+        if (err) return res.status(500).send({ message: `${err}` })
         if (!product) return res.status(404).send({ message: `Product not found` })
 
         return res.status(200).send({ product })
@@ -15,7 +15,7 @@ function getProduct(req, res) {
 
 function getProducts(req, res) {
     Product.find({}, (err, products) => {
-        if (err) return res.status(500).send({ message: err })
+        if (err) return res.status(500).send({ message: `${err}` })
         if (!products) return res.status(404).send({ message: `Products not found` })
 
         return res.status(200).send({ products })
@@ -32,7 +32,7 @@ function addProduct(req, res) {
     product.description = req.body.description
 
     product.save((err, productStored) => {
-        if (err) return res.status(500).send({ message: err })
+        if (err) return res.status(500).send({ message: `${err}` })
 
         return res.status(200).send({ product: productStored })
     })
@@ -43,7 +43,7 @@ function updateProduct(req, res) {
     let update = req.body
 
     Product.findOneAndUpdate(productId, update, (err, product) => {
-        if (err) return res.status(500).send({ message: err })
+        if (err) return res.status(500).send({ message: `${err}` })
 
         return res.status(200).send({ product })
     })
@@ -53,7 +53,7 @@ function deleteProduct(req, res) {
     let productId = req.params.productId
 
     Product.findByIdAndRemove(productId, (err, product) => {
-        if (err) return res.status(500).send({ message: err })
+        if (err) return res.status(500).send({ message: `${err}` })
 
         return res.status(201).send({ message: 'Product removed' })
     })
